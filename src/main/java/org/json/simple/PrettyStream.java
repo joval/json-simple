@@ -18,6 +18,19 @@ public class PrettyStream extends FilterOutputStream {
     }
 
     @Override
+    public void write(byte[] buff, int offset, int len) throws IOException {
+	len = Math.min(offset + len, buff.length);
+	for (int i=offset; i < len; i++) {
+	    write((int)buff[i]);
+	}
+    }
+
+    @Override
+    public void write(byte[] buff) throws IOException {
+	write(buff, 0, buff.length);
+    }
+
+    @Override
     public void write(int b) throws IOException {
 	if (quotation || escape) {
 	    out.write(b);
