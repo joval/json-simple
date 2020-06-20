@@ -10,6 +10,8 @@ import java.io.IOException;
  *
  */
 public class PrettyStream extends FilterOutputStream {
+    private static final byte[] LF = System.getProperty("line.break").getBytes();
+
     private int indent=0, lastchar=-1;
     private boolean quotation=false, escape=false;
 
@@ -40,7 +42,7 @@ public class PrettyStream extends FilterOutputStream {
 	    if (b == ']') {
 		out.write(b);
 	    } else {
-		out.write('\n');
+		out.write(LF);
 		indent++;
 		writeIndentation();
 		writeByte(b);
@@ -71,18 +73,18 @@ public class PrettyStream extends FilterOutputStream {
 	    break;
 	  case '{':
 	    out.write(b);
-	    out.write('\n');
+	    out.write(LF);
 	    indent++;
 	    writeIndentation();
 	    break;
 	  case ',':
 	    out.write(b);
-	    out.write('\n');
+	    out.write(LF);
 	    writeIndentation();
 	    break;
 	  case ']':
 	  case '}':
-	    out.write('\n');
+	    out.write(LF);
 	    indent--;
 	    writeIndentation();
 	    out.write(b);
