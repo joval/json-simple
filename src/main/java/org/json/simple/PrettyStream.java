@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  */
 public class PrettyStream extends FilterOutputStream {
-    private static final byte[] LF = System.getProperty("line.break").getBytes();
+    private static final byte[] LF = System.getProperty("line.separator").getBytes();
 
     private int indent=0, lastchar=-1;
     private boolean quotation=false, escape=false;
