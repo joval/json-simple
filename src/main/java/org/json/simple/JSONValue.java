@@ -290,12 +290,6 @@ public class JSONValue {
 			case '\r':
 				sb.append("\\r");
 				break;
-			case '\t':
-				sb.append("\\t");
-				break;
-			case '/':
-				sb.append("\\/");
-				break;
 			default:
                 //Reference: http://www.unicode.org/versions/Unicode5.1.0/
 				if((ch>='\u0000' && ch<='\u001F') || (ch>='\u007F' && ch<='\u009F') || (ch>='\u2000' && ch<='\u20FF')){
