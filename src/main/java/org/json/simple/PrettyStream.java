@@ -1,5 +1,6 @@
 package org.json.simple;
 
+import java.io.BufferedOutputStream;
 import java.io.FilterOutputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class PrettyStream extends FilterOutputStream {
     private boolean quotation=false, escape=false;
 
     public PrettyStream(OutputStream out) {
-	super(out);
+	super(out instanceof BufferedOutputStream ? out : new BufferedOutputStream(out, 1024));
     }
 
     @Override

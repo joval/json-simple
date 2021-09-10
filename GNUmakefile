@@ -26,7 +26,7 @@ clean:
 	rm -rf $(BUILD)
 
 install: json-simple.jar
-	cp $< $(TOP)/../jOVAL-Commercial/components/provider/offline/rsrc/lib
+	cp $< $(TOP)/../jOVAL-Commercial/components/engine/rsrc/lib
 
 classes: classdirs $(CLASS_FILES)
 
