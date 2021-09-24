@@ -1,8 +1,8 @@
 package org.json.simple;
 
-import java.io.BufferedOutputStream;
-import java.io.FilterOutputStream;
-import java.io.OutputStream;
+import java.io.BufferedWriter;
+import java.io.FilterWriter;
+import java.io.Writer;
 import java.io.IOException;
 
 /**
@@ -10,18 +10,19 @@ import java.io.IOException;
  * @author David A. Solin
  *
  */
-public class PrettyStream extends FilterOutputStream {
-    private static final byte[] LF = System.getProperty("line.separator").getBytes();
+class PrettyWriter extends FilterWriter {
+    private static final char[] LF = System.getProperty("line.separator").toCharArray();
+    private static final char SPACE = ' ';
 
     private int indent=0, lastchar=-1;
     private boolean quotation=false, escape=false;
 
-    public PrettyStream(OutputStream out) {
-	super(out instanceof BufferedOutputStream ? out : new BufferedOutputStream(out, 1024));
+    public PrettyWriter(Writer out) {
+	super(out instanceof BufferedWriter ? out : new BufferedWriter(out, 1024));
     }
 
     @Override
-    public void write(byte[] buff, int offset, int len) throws IOException {
+    public void write(char[] buff, int offset, int len) throws IOException {
 	len = Math.min(offset + len, buff.length);
 	for (int i=offset; i < len; i++) {
 	    write((int)buff[i]);
@@ -29,32 +30,27 @@ public class PrettyStream extends FilterOutputStream {
     }
 
     @Override
-    public void write(byte[] buff) throws IOException {
-	write(buff, 0, buff.length);
-    }
-
-    @Override
-    public void write(int b) throws IOException {
+    public void write(int c) throws IOException {
 	if (quotation || escape) {
-	    out.write(b);
+	    out.write(c);
 	} else if (lastchar == '[') {
 	    out.write(lastchar);
 	    lastchar = -1;
-	    if (b == ']') {
-		out.write(b);
+	    if (c == ']') {
+		out.write(c);
 	    } else {
 		out.write(LF);
 		indent++;
 		writeIndentation();
-		writeByte(b);
+		writeChar(c);
 	    }
 	} else {
-	    writeByte(b);
+	    writeChar(c);
 	}
 	if (escape) {
 	    escape = false;
 	} else {
-	    switch(b) {
+	    switch(c) {
 	      case '"':  // toggle quotation
 		quotation = !quotation;
 		break;
@@ -67,19 +63,19 @@ public class PrettyStream extends FilterOutputStream {
 
     // Private
 
-    private void writeByte(int b) throws IOException {
-	switch(b) {
+    private void writeChar(int c) throws IOException {
+	switch(c) {
 	  case '[':
-	    lastchar = b;
+	    lastchar = c;
 	    break;
 	  case '{':
-	    out.write(b);
+	    out.write(c);
 	    out.write(LF);
 	    indent++;
 	    writeIndentation();
 	    break;
 	  case ',':
-	    out.write(b);
+	    out.write(c);
 	    out.write(LF);
 	    writeIndentation();
 	    break;
@@ -88,22 +84,22 @@ public class PrettyStream extends FilterOutputStream {
 	    out.write(LF);
 	    indent--;
 	    writeIndentation();
-	    out.write(b);
+	    out.write(c);
 	    break;
 	  case ':':
-	    out.write(' ');
-	    out.write(b);
-	    out.write(' ');
+	    out.write(SPACE);
+	    out.write(c);
+	    out.write(SPACE);
 	    break;
 	  default:
-	    out.write(b);
+	    out.write(c);
 	    break;
 	}
     }
 
     // Private
 
-    private static final byte[] TAB = {' ',' ',' ',' '};
+    private static final char[] TAB = {SPACE, SPACE, SPACE, SPACE};
 
     private void writeIndentation() throws IOException {
 	for (int i = 0; i < indent; i++) {

@@ -5,7 +5,7 @@ CLASSES=\
 	org.json.simple.JSONObject	\
 	org.json.simple.JSONStreamAware	\
 	org.json.simple.JSONValue	\
-	org.json.simple.PrettyStream	\
+	org.json.simple.PrettyWriter	\
 	org.json.simple.parser.ContainerFactory	\
 	org.json.simple.parser.ContentHandler	\
 	org.json.simple.parser.JSONParser	\
