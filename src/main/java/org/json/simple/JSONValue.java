@@ -130,6 +130,7 @@ public class JSONValue {
             out.write('\"');
             out.write(escape((String)value));
             out.write('\"');
+            out.flush();
             return;
         }
 
@@ -138,6 +139,7 @@ public class JSONValue {
                 out.write("null");
             else
                 out.write(value.toString());
+            out.flush();
             return;
         }
 
@@ -146,16 +148,19 @@ public class JSONValue {
                 out.write("null");
             else
                 out.write(value.toString());
+            out.flush();
             return;
         }        
 
         if(value instanceof Number){
             out.write(value.toString());
+            out.flush();
             return;
         }
 
         if(value instanceof Boolean){
             out.write(value.toString());
+            out.flush();
             return;
         }
 
@@ -166,6 +171,7 @@ public class JSONValue {
 
         if((value instanceof JSONAware)){
             out.write(((JSONAware)value).toJSONString());
+            out.flush();
             return;
         }
 
@@ -225,6 +231,7 @@ public class JSONValue {
         }
 
         out.write(value.toString());
+	out.flush();
     }
 
     /**

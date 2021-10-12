@@ -71,6 +71,7 @@ public class JSONObject extends TreeMap implements Map, JSONAware, JSONStreamAwa
             JSONValue.writeJSONString(entry.getValue(), out);
         }
         out.write('}');
+	out.flush();
     }
 
     public void writeJSONString(Writer out) throws IOException{
