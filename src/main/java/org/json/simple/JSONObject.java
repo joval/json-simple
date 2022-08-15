@@ -50,7 +50,7 @@ public class JSONObject extends TreeMap implements Map, JSONAware, JSONStreamAwa
             out.write("null");
             return;
         }
-	if (PRETTY && !(out instanceof PrettyWriter)) {
+	if (Boolean.getBoolean("json.pretty") && !(out instanceof PrettyWriter)) {
 	    out = new PrettyWriter(out);
 	}
 

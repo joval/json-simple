@@ -122,7 +122,7 @@ public class JSONValue {
             out.write("null");
             return;
         }
-	if (JSONStreamAware.PRETTY && !(out instanceof PrettyWriter)) {
+	if (Boolean.getBoolean("json.pretty") && !(out instanceof PrettyWriter)) {
 	    out = new PrettyWriter(out);
 	}
 
@@ -150,7 +150,7 @@ public class JSONValue {
                 out.write(value.toString());
             out.flush();
             return;
-        }        
+        }
 
         if(value instanceof Number){
             out.write(value.toString());
