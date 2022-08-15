@@ -50,7 +50,7 @@ public class JSONArray extends ArrayList implements JSONAware, JSONStreamAware {
             out.write("null");
             return;
         }
-	if (PRETTY && !(out instanceof PrettyWriter)) {
+	if (Boolean.getBoolean("json.pretty") && !(out instanceof PrettyWriter)) {
 	    out = new PrettyWriter(out);
 	}
 

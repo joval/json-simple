@@ -8,7 +8,6 @@ import java.io.Writer;
  * @author FangYidong<fangyidong@yahoo.com.cn>
  */
 public interface JSONStreamAware {
-	boolean PRETTY = Boolean.getBoolean("json.pretty");
 
 	/**
 	 * write JSON string to out.
