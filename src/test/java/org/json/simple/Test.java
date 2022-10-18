@@ -28,7 +28,7 @@ public class Test extends TestCase{
 
 	public void testDecode() throws Exception{
 		System.out.println("=======decode=======");
-		
+
 		String s="[0,{\"1\":{\"2\":{\"3\":{\"4\":[5,{\"6\":7}]}}}}]";
 		Object obj=JSONValue.parse(s);
 		JSONArray array=(JSONArray)obj;
@@ -36,28 +36,28 @@ public class Test extends TestCase{
 		System.out.println(array.get(1));
 		System.out.println();
 		assertEquals("{\"1\":{\"2\":{\"3\":{\"4\":[5,{\"6\":7}]}}}}",array.get(1).toString());
-		
+
 		JSONObject obj2=(JSONObject)array.get(1);
 		System.out.println("======field \"1\"==========");
-		System.out.println(obj2.get("1"));	
+		System.out.println(obj2.get("1"));
 		assertEquals("{\"2\":{\"3\":{\"4\":[5,{\"6\":7}]}}}",obj2.get("1").toString());
-		
+
 		s="{}";
 		obj=JSONValue.parse(s);
 		assertEquals("{}",obj.toString());
-		
+
 		s="[5,]";
 		obj=JSONValue.parse(s);
 		assertEquals("[5]",obj.toString());
-		
+
 		s="[5,,2]";
 		obj=JSONValue.parse(s);
 		assertEquals("[5,2]",obj.toString());
-		
+
 		s="[\"hello\\bworld\\\"abc\\tdef\\\\ghi\\rjkl\\n123\\u4e2d\"]";
 		obj=JSONValue.parse(s);
 		assertEquals("hello\bworld\"abc\tdef\\ghi\rjkl\n123中",((List)obj).get(0).toString());
-		
+
 		JSONParser parser = new JSONParser();
 		s="{\"name\":";
 		try{
@@ -67,7 +67,7 @@ public class Test extends TestCase{
 			assertEquals(ParseException.ERROR_UNEXPECTED_TOKEN, pe.getErrorType());
 			assertEquals(8, pe.getPosition());
 		}
-		
+
 		s="{\"name\":}";
 		try{
 			obj = parser.parse(s);
@@ -76,8 +76,8 @@ public class Test extends TestCase{
 			assertEquals(ParseException.ERROR_UNEXPECTED_TOKEN, pe.getErrorType());
 			assertEquals(8, pe.getPosition());
 		}
-		
-		
+
+
 		s="{\"name";
 		try{
 			obj = parser.parse(s);
@@ -86,8 +86,8 @@ public class Test extends TestCase{
 			assertEquals(ParseException.ERROR_UNEXPECTED_TOKEN, pe.getErrorType());
 			assertEquals(6, pe.getPosition());
 		}
-		
-		
+
+
 		s = "[[null, 123.45, \"a\\\tb c\"}, true]";
 		try{
 			parser.parse(s);
@@ -107,7 +107,7 @@ public class Test extends TestCase{
 				break;
 			}
 		}
-		
+
 		s = "{\"first\": 123, \"second\": [4, 5, 6], \"third\": 789}";
 		ContainerFactory containerFactory = new ContainerFactory(){
 			public List creatArrayContainer() {
@@ -117,9 +117,9 @@ public class Test extends TestCase{
 			public Map createObjectContainer() {
 				return new LinkedHashMap();
 			}
-			
+
 		};
-		
+
 		try{
 			Map json = (Map)parser.parse(s, containerFactory);
 			Iterator iter = json.entrySet().iterator();
@@ -128,15 +128,15 @@ public class Test extends TestCase{
 				Map.Entry entry = (Map.Entry)iter.next();
 				System.out.println(entry.getKey() + "=>" + entry.getValue());
 			}
-			
-			System.out.println("==toJSONString()==");			
+
+			System.out.println("==toJSONString()==");
 			System.out.println(JSONValue.toJSONString(json));
 			assertEquals("{\"first\":123,\"second\":[4,5,6],\"third\":789}", JSONValue.toJSONString(json));
 		}
 		catch(ParseException pe){
 			pe.printStackTrace();
 		}
-		
+
 		s = "{\"first\": 123, \"second\": [{\"s1\":{\"s11\":\"v11\"}}, 4, 5, 6], \"third\": 789}";
 		ContentHandler myHandler = new ContentHandler() {
 
@@ -182,7 +182,7 @@ public class Test extends TestCase{
 				System.out.println("startObjectEntry(), key:" + key);
 				return true;
 			}
-			
+
 		};
 		try{
 			parser.parse(s, myHandler);
@@ -190,34 +190,34 @@ public class Test extends TestCase{
 		catch(ParseException pe){
 			pe.printStackTrace();
 		}
-        
+
         class KeyFinder implements ContentHandler{
             private Object value;
             private boolean found = false;
             private boolean end = false;
             private String key;
             private String matchKey;
-            
+
             public void setMatchKey(String matchKey){
                 this.matchKey = matchKey;
             }
-            
+
             public Object getValue(){
                 return value;
             }
-            
+
             public boolean isEnd(){
                 return end;
             }
-            
+
             public void setFound(boolean found){
                 this.found = found;
             }
-            
+
             public boolean isFound(){
                 return found;
             }
-            
+
             public void startJSON() throws ParseException, IOException {
                 found = false;
                 end = false;
@@ -243,7 +243,7 @@ public class Test extends TestCase{
                 return true;
             }
 
-            
+
             public boolean startObject() throws ParseException, IOException {
                 return true;
             }
@@ -252,7 +252,7 @@ public class Test extends TestCase{
                 this.key = key;
                 return true;
             }
-            
+
             public boolean endArray() throws ParseException, IOException {
                 return false;
             }
@@ -265,7 +265,7 @@ public class Test extends TestCase{
                 return true;
             }
         };
-        
+
         s = "{\"first\": 123, \"second\": [{\"k1\":{\"id\":\"id1\"}}, 4, 5, 6, {\"id\": 123}], \"third\": 789, \"id\": null}";
         parser.reset();
         KeyFinder keyFinder = new KeyFinder();
@@ -294,10 +294,10 @@ public class Test extends TestCase{
             pe.printStackTrace();
         }
 	}
-	
+
 	public void testEncode() throws Exception{
 		System.out.println("=======encode=======");
-		
+
 		JSONArray array1=new JSONArray();
 		array1.add("abc\u0010a/");
 		array1.add(new Integer(123));
@@ -306,22 +306,22 @@ public class Test extends TestCase{
 		System.out.println("======array1==========");
 		System.out.println(array1);
 		System.out.println();
-		assertEquals("[\"abc\\u0010a\\/\",123,222.123,true]",array1.toString());
-		
+		assertEquals("[\"abc\\u0010a/\",123,222.123,true]",array1.toString());
+
 		JSONObject obj1=new JSONObject();
 		obj1.put("array1",array1);
 		System.out.println("======obj1 with array1===========");
 		System.out.println(obj1);
 		System.out.println();
-		assertEquals("{\"array1\":[\"abc\\u0010a\\/\",123,222.123,true]}",obj1.toString());
-		
+		assertEquals("{\"array1\":[\"abc\\u0010a/\",123,222.123,true]}",obj1.toString());
+
 		obj1.remove("array1");
 		array1.add(obj1);
 		System.out.println("======array1 with obj1========");
 		System.out.println(array1);
 		System.out.println();
-		assertEquals("[\"abc\\u0010a\\/\",123,222.123,true,{}]",array1.toString());
-	
+		assertEquals("[\"abc\\u0010a/\",123,222.123,true,{}]",array1.toString());
+
 		List list = new ArrayList();
 		list.add("abc\u0010a/");
 		list.add(new Integer(123));
@@ -331,15 +331,15 @@ public class Test extends TestCase{
 		System.out.println("======list==========");
 		System.out.println(JSONArray.toJSONString(list));
 		System.out.println();
-		assertEquals("[\"abc\\u0010a\\/\",123,222.123,true,null]",JSONArray.toJSONString(list));
+		assertEquals("[\"abc\\u0010a/\",123,222.123,true,null]",JSONArray.toJSONString(list));
 
 		Map map = new HashMap();
 		map.put("array1",list);
 		System.out.println("======map with list===========");
 		System.out.println(map);
 		System.out.println();
-		assertEquals("{\"array1\":[\"abc\\u0010a\\/\",123,222.123,true,null]}",JSONObject.toJSONString(map));		
-		
+		assertEquals("{\"array1\":[\"abc\\u0010a/\",123,222.123,true,null]}",JSONObject.toJSONString(map));
+
         Map m1 = new LinkedHashMap();
         Map m2 = new LinkedHashMap();
         List  l1 = new LinkedList();
@@ -355,13 +355,13 @@ public class Test extends TestCase{
         String jsonString = JSONValue.toJSONString(l1);
         System.out.println(jsonString);
         assertEquals("[{\"k11\":\"v11\",\"k12\":\"v12\",\"k13\":\"v13\"},{\"k21\":\"v21\",\"k22\":\"v22\",\"k23\":\"v23\"}]", jsonString);
-    
+
         StringWriter out = new StringWriter();
         JSONValue.writeJSONString(l1, out);
         jsonString = out.toString();
         System.out.println(jsonString);
         assertEquals("[{\"k11\":\"v11\",\"k12\":\"v12\",\"k13\":\"v13\"},{\"k21\":\"v21\",\"k22\":\"v22\",\"k23\":\"v23\"}]", jsonString);
-        
+
         List l2 = new LinkedList();
         Map m3 = new LinkedHashMap();
         m3.put("k31", "v3");
