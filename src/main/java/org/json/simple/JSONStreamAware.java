@@ -1,3 +1,6 @@
+/*
+ * Modifications (c) 2021-2024 Arctic Wolf Networks, Inc.
+ */
 package org.json.simple;
 
 import java.io.IOException;

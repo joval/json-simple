@@ -1,6 +1,8 @@
 /*
  * $Id: JSONArray.java,v 1.1 2006/04/15 14:10:48 platform Exp $
  * Created on 2006-4-10
+ *
+ * Modifications (c) 2021-2024 Arctic Wolf Networks, Inc.
  */
 package org.json.simple;
 
