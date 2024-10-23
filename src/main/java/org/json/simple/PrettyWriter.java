@@ -1,3 +1,4 @@
+// Copyright (C) 2019-2024, Arctic Wolf Networks, Inc.  All rights reserved.
 package org.json.simple;
 
 import java.io.BufferedWriter;
